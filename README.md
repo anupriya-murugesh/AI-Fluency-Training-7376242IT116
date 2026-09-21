@@ -222,25 +222,15 @@ AI training Day 1/
 
 ## 9. Screenshots
 
-### Setup Check
+![Setup Check](output-screenshots/setup_check.png)
 
-![Setup Check](screenshots/check_setup.png)
+![Chatbot](output-screenshots/chatbot.png)
 
-### Chatbot Output
+![Workflow](output-screenshots/workflow.png)
 
-![Chatbot Output](screenshots/chatbot.png)
+![AI Agent](output-screenshots/toola_agent.png)
 
-### Rule-Based Workflow
-
-![Workflow Output](screenshots/workflow.png)
-
-### AI Agent and Tool Execution
-
-![Agent Tool Execution](screenshots/tool_agent.png)
-
-### Challenge
-
-![Challenge Output](screenshots/challenge.png)
+![Challenge](output-screenshots/challenge.png)
 
 ---
 
