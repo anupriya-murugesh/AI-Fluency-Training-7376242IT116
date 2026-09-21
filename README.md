@@ -218,23 +218,7 @@ AI training Day 1/
     └── challenge.png
 ```
 
----
-
-## 9. Screenshots
-
-![Setup Check](output-screenshots/setup_check.png)
-
-![Chatbot](output-screenshots/chatbot.png)
-
-![Workflow](output-screenshots/workflow.png)
-
-![AI Agent](output-screenshots/toola_agent.png)
-
-![Challenge](output-screenshots/challenge.png)
-
----
-
-## 10. Key Learning
+## 9. Key Learning
 
 This exercise demonstrates the difference between a simple LLM chatbot, a deterministic rule-based workflow, and a tool-using AI agent.
 
@@ -254,7 +238,7 @@ Tool-Using AI Agent
 
 ---
 
-## 11. Security
+## 10. Security
 
 The Groq API key is stored in a `.env` file and is excluded from Git using `.gitignore`.
 
@@ -271,7 +255,7 @@ The API key should never be committed to GitHub.
 
 ---
 
-## 12. Conclusion
+## 11. Conclusion
 
 The three systems demonstrate different approaches to solving the same problem.
 
