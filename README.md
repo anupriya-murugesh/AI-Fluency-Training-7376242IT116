@@ -163,22 +163,24 @@ Final fee = 27000
 
 ## 6. Observations
 
-| Criterion | Chatbot | Workflow | Agent |
+| Criterion | Chatbot | Rule-Based Workflow | AI Agent |
 |---|---|---|---|
-| Q1 correct? | No* | Yes | Yes |
-| Q2 correct? | No* | Yes | Yes |
-| Q3 correct? | No* | No | Yes |
+| Q1 correct? | No | Yes | Yes |
+| Q2 correct? | No | Yes | Yes |
+| Q3 correct? | No | No | Yes |
 | Q4 handled well? | Yes | No | Yes |
-| Challenge question handled? | See challenge output | See challenge output | See challenge output |
-| Same output on repeat run? | Depends on LLM | Yes | Depends on LLM/tool decisions |
-| Approximate response time | Depends on LLM/API | Very fast | Depends on LLM/tool calls |
-| Number of LLM calls per question | 1 | 0 | Multiple when tools are required |
-| Strength | Good for general conversation | Predictable and fast | Can dynamically use tools |
-| Weakness | Cannot directly access private course data | Limited to predefined rules | More complex and depends on LLM/tool calling |
+| Challenge question handled? | No | No | Yes |
+| Same output on repeat run? | No | Yes | No |
+| Number of LLM calls per question | 1 | 0 | 1 or more |
+| Private course data accessed? | No | Yes | Yes |
+| Tool calls used? | No | No | Yes |
 
-\*The chatbot does not have access to the private course-fee dictionary, so numerical answers may be incorrect or guessed.
+### Explanation
 
----
+- **Chatbot:** It answered the general welcome-message question well, but it did not have access to the private course-fee data. Its numerical answers were therefore not available.
+- **Rule-Based Workflow:** It correctly answered Q1 and Q2 because those cases were explicitly implemented in the Python rules. It could not handle Q3 because no comparison rule was implemented, and it could not answer Q4 because it only handles course-fee questions.
+- **AI Agent:** It correctly answered all four questions. For fee-related questions, it used the `get_course_fee` and `calculator` tools. It also successfully handled the challenge question by checking all course combinations within the Rs. 30,000 budget.
+- **Repeat run:** The workflow produced exactly the same output on both runs. The chatbot and agent produced slightly different natural-language wording on the second run, although the agent produced the same correct numerical results.
 
 ## 7. Comparison
 
