@@ -1,5 +1,7 @@
 # AI-Fluency-Training-7376242IT116
-AI fluency training DAY 1 lab - Chatbot vs Rule-Based Workflow vs AI Agent
+
+AI Fluency Training DAY 1 Lab – Chatbot vs Rule-Based Workflow vs AI Agent
+
 # AI Fluency Training – Day 1
 
 ## 1. Project Overview
@@ -10,7 +12,7 @@ This project demonstrates three different approaches to answering questions abou
 2. **Rule-Based Workflow** – uses predefined Python rules without an LLM.
 3. **AI Agent** – allows the LLM to decide when to use tools such as fee lookup and calculation.
 
-The project also includes a challenge task to test how the different systems handle a new type of request.
+The project also includes a challenge task to compare how the systems handle a new type of request.
 
 ---
 
@@ -106,7 +108,7 @@ LLM decides next action
 Final Answer
 ```
 
-This follows a **Reason → Act → Observe → Repeat** pattern.
+The agent follows a **Reason → Act → Observe → Repeat** pattern when tools are required.
 
 ---
 
@@ -125,7 +127,7 @@ get_course_fee("AI202")
 
 ### `calculator`
 
-Performs arithmetic safely using supported mathematical operations.
+Performs arithmetic calculations using supported mathematical operations.
 
 Example:
 
@@ -142,21 +144,29 @@ calculator("(12000 + 18000) * 0.9")
 
 > What is the total fee for CS101 and AI202 after a 10% scholarship?
 
-The agent needs both course fees and then performs the calculation.
+The agent used three tool calls:
 
-| Step | Tool / Action | Observation |
-|---|---|---|
-| 1 | `get_course_fee("CS101")` | 12000 |
-| 2 | `get_course_fee("AI202")` | 18000 |
-| 3 | `calculator("(12000 + 18000) * 0.9")` | 27000 |
-| 4 | Final answer | Rs. 27,000 |
+| Step | Tool Called | Arguments | Result |
+|---|---|---|---:|
+| 1 | `get_course_fee` | `{"course_code": "CS101"}` | 12000 |
+| 2 | `get_course_fee` | `{"course_code": "AI202"}` | 18000 |
+| 3 | `calculator` | `{"expression": "(12000+18000)*0.9"}` | 27000.0 |
 
-The calculation is:
+The final answer was:
+
+> The total fee for CS101 and AI202 after a 10% scholarship is ₹27,000.
+
+### Calculation
 
 ```text
-12000 + 18000 = 30000
-10% scholarship = 3000
-Final fee = 27000
+CS101 = ₹12,000
+AI202 = ₹18,000
+
+Total = ₹30,000
+
+10% scholarship = ₹3,000
+
+Final fee = ₹27,000
 ```
 
 ---
@@ -169,7 +179,7 @@ Final fee = 27000
 | Q2 correct? | No | Yes | Yes |
 | Q3 correct? | No | No | Yes |
 | Q4 handled well? | Yes | No | Yes |
-| Challenge question handled? | No | No | Yes |
+| Challenge question handled? | Not Tested | No | Yes |
 | Same output on repeat run? | No | Yes | No |
 | Number of LLM calls per question | 1 | 0 | 1 or more |
 | Private course data accessed? | No | Yes | Yes |
@@ -177,26 +187,61 @@ Final fee = 27000
 
 ### Explanation
 
-- **Chatbot:** It answered the general welcome-message question well, but it did not have access to the private course-fee data. Its numerical answers were therefore not available.
-- **Rule-Based Workflow:** It correctly answered Q1 and Q2 because those cases were explicitly implemented in the Python rules. It could not handle Q3 because no comparison rule was implemented, and it could not answer Q4 because it only handles course-fee questions.
-- **AI Agent:** It correctly answered all four questions. For fee-related questions, it used the `get_course_fee` and `calculator` tools. It also successfully handled the challenge question by checking all course combinations within the Rs. 30,000 budget.
-- **Repeat run:** The workflow produced exactly the same output on both runs. The chatbot and agent produced slightly different natural-language wording on the second run, although the agent produced the same correct numerical results.
+- **Chatbot:** It could not answer the three fee-related questions because it did not have access to the private course-fee data. It successfully generated a two-line welcome message for Q4.
+- **Rule-Based Workflow:** It correctly answered Q1 and Q2 because those cases were implemented in the Python rules. It could not handle Q3 because a comparison rule was not implemented. It also rejected Q4 because the workflow only handles course-fee questions.
+- **AI Agent:** It correctly answered all four questions. It used `get_course_fee` to retrieve private fee data and `calculator` for arithmetic operations. It also successfully handled the challenge question by checking the possible course combinations within the Rs. 30,000 budget.
+- **Repeat run:** The rule-based workflow produced exactly the same output on both runs. The chatbot and AI agent produced slightly different natural-language wording on the second run, while the agent produced the same correct results.
 
-## 7. Comparison
+---
+
+## 7. Challenge Question
+
+**Question:**
+
+> I can pay Rs. 30,000. Which two courses can I take together within this budget?
+
+### Rule-Based Workflow
+
+The workflow could not handle this question and returned:
+
+```text
+Sorry, I can only answer course-fee questions.
+```
+
+### AI Agent
+
+The agent retrieved the fees of all three courses and calculated the possible combinations.
+
+| Course 1 | Course 2 | Combined Fee |
+|---|---|---:|
+| CS101 | AI202 | ₹30,000 |
+| CS101 | DS303 | ₹27,000 |
+
+The combination **AI202 + DS303** costs ₹33,000 and exceeds the budget.
+
+Therefore, the two valid combinations within the ₹30,000 budget are:
+
+- CS101 + AI202 = ₹30,000
+- CS101 + DS303 = ₹27,000
+
+---
+
+## 8. Comparison
 
 | Feature | Chatbot | Rule-Based Workflow | AI Agent |
 |---|---|---|---|
 | Uses LLM | Yes | No | Yes |
 | Uses private fee data | No | Yes | Yes |
 | Uses tools | No | No | Yes |
-| Handles calculations | LLM-generated | Python | Calculator tool |
-| Dynamic decision making | Limited | No | Yes |
-| Flexibility | High for general questions | Low | High |
-| Predictability | Depends on LLM | High | Depends on LLM/tool calls |
+| Handles calculations | LLM | Python | Calculator tool |
+| Dynamic decision making | No | No | Yes |
+| General conversation | Yes | No | Yes |
+| Handles predefined fee questions | No | Yes | Yes |
+| Handles new tool-based questions | No | No | Yes |
 
 ---
 
-## 8. Project Structure
+## 9. Project Structure
 
 ```text
 AI training Day 1/
@@ -212,21 +257,27 @@ AI training Day 1/
 ├── README.md
 ├── .gitignore
 │
-└── screenshots/
+└── output-screenshots/
     ├── check_setup.png
     ├── chatbot.png
     ├── workflow.png
-    ├── tool_agent.png
+    ├── toola_agent.png
     └── challenge.png
 ```
 
-## 9. Key Learning
+---
+
+## 10. Key Learning
 
 This exercise demonstrates the difference between a simple LLM chatbot, a deterministic rule-based workflow, and a tool-using AI agent.
 
-The main learning is that an LLM should not be expected to know or guess private data. Instead, an agent can connect the LLM to reliable tools that retrieve the required data and perform calculations.
+The chatbot depends only on the LLM and does not have access to private course data.
 
-The agent therefore combines:
+The rule-based workflow gives predictable results for the cases that have been explicitly programmed.
+
+The AI agent combines an LLM with external tools. The LLM can decide when to retrieve private data and when to perform calculations.
+
+The main learning is:
 
 ```text
 LLM
@@ -240,11 +291,11 @@ Tool-Using AI Agent
 
 ---
 
-## 10. Security
+## 11. Security
 
 The Groq API key is stored in a `.env` file and is excluded from Git using `.gitignore`.
 
-The following files/folders are ignored:
+The following files and folders are ignored:
 
 ```text
 .env
@@ -257,14 +308,14 @@ The API key should never be committed to GitHub.
 
 ---
 
-## 11. Conclusion
+## 12. Conclusion
 
 The three systems demonstrate different approaches to solving the same problem.
 
-The **chatbot** is useful for general conversational tasks but cannot reliably access private course data.
+The **chatbot** is suitable for general conversational responses but does not have access to the private course-fee data.
 
-The **rule-based workflow** provides predictable results for predefined cases but has limited flexibility.
+The **rule-based workflow** provides predictable results for predefined cases but cannot handle cases for which rules have not been implemented.
 
-The **AI agent** combines an LLM with tools, allowing it to retrieve private data and perform calculations dynamically.
+The **AI agent** combines an LLM with tools, allowing it to retrieve private data, perform calculations, and handle questions that require multiple steps.
 
-This project demonstrates the basic architecture and working principle of a **tool-using AI agent**.
+The project demonstrates the basic architecture and working principle of a **tool-using AI agent**.
